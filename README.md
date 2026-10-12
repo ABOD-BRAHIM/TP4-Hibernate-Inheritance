@@ -1,0 +1,18 @@
+## TP 4 : Hibernate-Inheritance
+Vue d'ensemble de la structure du projet dans l'IDE. Elle illustre l'organisation des packages pour la gestion du mapping de l'héritage JPA en trois stratégies distinctes : joined (tables jointes), singletable (table unique) et tableperclass (une table par classe concrète).\
+![1.png](screenshots/1.png)
+Définition de l'entité Developpeur située dans le package joined. Elle hérite de la classe abstraite Employe et ajoute un attribut spécifique langage. En base de données, cette entité possède sa propre table reliée à celle de l'employé par une clé étrangère.
+![2.png](screenshots/2.png)
+Définition de la classe mère abstraite Employe pour la stratégie JOINED. Elle regroupe les identifiants et les attributs communs (comme id et nom) qui seront stockés dans la table parente principale.![3.png](screenshots/3.png)
+Définition de l'entité Manager héritant de Employe. Elle contient le champ spécifique nombreEquipes. Sa propre table contiendra cet attribut spécifique lié à l'ID de la table parente.![4.png](screenshots/4.png)
+Classe fille Moto étendant Vehicule dans la stratégie à table unique. L'annotation @DiscriminatorValue("MOTO") spécifie la valeur inscrite dans la colonne de discrimination pour identifier ce type d'enregistrement.![5.png](screenshots/5.png)
+Configuration de la classe parente Vehicule avec @Inheritance(strategy = InheritanceType.SINGLE_TABLE). L'annotation @DiscriminatorColumn définit la colonne de type texte (vehicule_type) utilisée pour distinguer les sous-classes (Moto, Voiture) dans une seule et même table SQL.![6.png](screenshots/6.png)
+Classe fille Voiture étendant Vehicule, avec la valeur de discriminateur "VOITURE" et l'attribut propre nombrePortes. Toutes les instances de Voiture et Moto partagent la même table SQL.![7.png](screenshots/7.png)
+Entité fille Electronique représentant un produit avec un attribut garantie. Avec la stratégie TABLE_PER_CLASS, une table SQL complète est générée spécifiquement pour cette classe concrète, incluant aussi bien ses champs propres que ceux hérités de la classe parente.![8.png](screenshots/8.png)
+Entité fille Livre héritant de Produit, avec son attribut propre auteur. Sa table SQL dédiée contiendra toutes ses colonnes métier ainsi que l'identifiant et le nom hérités.![9.png](screenshots/9.png)
+Classe mère abstraite Produit annotée avec @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS). Elle sert de modèle de base et définit les propriétés communes (id, nom) sans générer de table propre car elle est abstraite![10.png](screenshots/10.png)
+Implémentation du programme principal App.java effectuant la persistance d'instances pour chaque stratégie d'héritage (SINGLE_TABLE, JOINED, et TABLE_PER_CLASS) dans une transaction unique.![11.png](screenshots/11.png)
+Exécution de requêtes JPQL polymorphiques sur les classes mères pour récupérer et afficher la liste complète des véhicules, employés et produits enregistrés.![12.png](screenshots/12.png)
+Déclaration de toutes les classes entités de chaque stratégie d'héritage et configuration de la base de données H2 en mode create-drop.![13.png](screenshots/13.png)
+Intégration des dépendances Maven requises, incluant l'API JPA, le moteur d'implémentation Hibernate et le connecteur de la base de données H2.![14.png](screenshots/14.png)
+Affichage dans la console des requêtes SQL polymorphiques générées par Hibernate (utilisation de LEFT OUTER JOIN et de requêtes unifiées) lors de la récupération des entités en base de données.![15.png](screenshots/15.png)
